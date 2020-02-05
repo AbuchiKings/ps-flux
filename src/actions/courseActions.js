@@ -10,5 +10,15 @@ export function saveCourse(course) {
             course: savedCourse
         });
     });
-    
+
+}
+
+export function loadCourses(course) {
+    courseApi.getCourses().then(courses => {
+        dispatcher.dispatch({
+            actionType: actionTypes.LOAD_COURSES,
+            courses
+        });
+    });
+
 }
