@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getCourses } from "../api/courseApi";
 import store from '../stores/courseStore';
 import { Link } from 'react-router-dom'
 import { loadCourses } from '../actions/courseActions';
