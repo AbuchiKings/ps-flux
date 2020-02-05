@@ -30,6 +30,12 @@ const store = new CourseStore();
 
 dispatcher.register(action => {
     switch (action.actionType) {
+        case actionTypes.DELETE_COURSE:
+            _courses = _courses.filter(course => {
+                return course.id !== parseInt(action.id, 10)
+            });
+            store.emitChange();
+            break;
         case actionTypes.CREATE_COURSE:
             _courses.push(action.course);
             store.emitChange();
@@ -45,6 +51,7 @@ dispatcher.register(action => {
             _courses = action.courses;
             store.emitChange();
             break;
+
         default:
         // do nothing
     }

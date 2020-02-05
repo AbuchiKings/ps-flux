@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CourseForm from "./CourseForm";
 import * as courseActions from "../actions/courseActions";
 import { toast } from "react-toastify"
@@ -8,6 +8,7 @@ import store from "../stores/courseStore";
 const ManageCoursePage = (props) => {
     //console.log(props)
     const [errors, setErrors] = useState({});
+    const [courses, setCourses] = useState(store.getCourses());
     const [course, setCourse] = useState({
         id: null,
         slug: "",
@@ -16,12 +17,21 @@ const ManageCoursePage = (props) => {
         category: ""
     });
 
-    useEffect(()=>{
+    useEffect(() => {
+        store.addChangeListener(onChange)
         const slug = props.match.params.slug;
-        if(slug){
-            setCourse(getCourseBySlug(slug));
+        if (courses.length === 0) {
+            courseActions.loadCourses()
         }
-    }, [props.match.params.slug])
+        else if (slug) {
+            setCourse(store.getCourseBySlug(slug));
+        }
+        return () => store.removeChangeListener(onChange);
+    }, [courses.length, props.match.params.slug])
+
+    function onChange() {
+        setCourses(store.getCourses())
+    }
 
     function handleTitleChange({ target }) {
         //console.log('Typing...')

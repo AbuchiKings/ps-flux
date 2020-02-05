@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import store from '../stores/courseStore';
 import { Link } from 'react-router-dom'
-import { loadCourses } from '../actions/courseActions';
+import { loadCourses, deleteCourse } from '../actions/courseActions';
+import CourseList from './CourseList';
 
 function CoursesPage() {
 
@@ -11,19 +12,22 @@ function CoursesPage() {
         store.addChangeListener(onChange)
         if (store.getCourses().length === 0) loadCourses();
         return () => store.removeChangeListener(onChange)
-    }, []);
+    }, [courses.length]);
 
     function onChange() {
         setCourses(store.getCourses());
 
     }
+    
 
 
     return (
         <>
             <h2>Courses</h2>
-            <Link className="btn btn-primary" to="/course"> Add Course </Link>
-            <CourseList courses={courses} />
+            <Link className="btn btn-primary" to="/course">
+                Add Course
+             </Link>
+            <CourseList courses={courses} delCourse={deleteCourse}/>
         </>
     )
 
